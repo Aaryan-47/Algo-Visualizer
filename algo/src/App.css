@@ -1,0 +1,41 @@
+.sorting
+{
+ 
+  display:flex;
+  flex-direction:column;
+}
+.pathfinding
+{
+  display:flex;
+  flex-direction:column;
+}
+.card
+{
+  background-image: linear-gradient(rgb(79, 3, 3),rgb(83, 4, 4),rgb(42, 42, 74));
+}
+img{
+  height:600px;
+  width:550px;
+}
+.img1
+{
+  height:600px;
+  width:500px;
+}
+body{
+  background-image: url("./images/background1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+a{
+  text-align: center;
+  color:rgb(1, 84, 85);
+  color:blanchedalmond;
+  font-family: 'Blaka', cursive;
+font-family: 'Koulen', cursive;
+font-family: 'Montserrat', sans-serif;
+}
+a:hover{
+  text-decoration: none;
+  color:rgb(149, 241, 241);
+}
