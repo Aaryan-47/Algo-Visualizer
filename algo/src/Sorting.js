@@ -230,7 +230,7 @@ function Sorting() {
 const reset=()=>
 {
   let arr=[]
-  for(let p=0;p<80;p++){
+  for(let p=0;p<100;p++){
   let i=Math.floor(Math.random()*30+2);
   arr.push(i);
   }
