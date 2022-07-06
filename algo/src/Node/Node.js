@@ -8,10 +8,8 @@ export default function Node(props)
         isEnd,
         isStart,
         isWall,
-        onMouseDown,
-        onMouseEnter,
-        onMouseUp,
         row,
+        wt
       } = props;
     let checkWhether;
     if(isEnd===true)
@@ -20,12 +18,12 @@ export default function Node(props)
      checkWhether='node-start';
      else if(isWall===true)
      checkWhether='node-wall';
+     else if(wt>1)
+     checkWhether='node-weight';
     return (
         <div
         id={`node-${row}-${col}`}
         className={`node ${checkWhether}`}
-        onMouseDown={() => onMouseDown(row,col)}
-        onMouseEnter={() => onMouseEnter(row, col)}
-        onMouseUp={() => onMouseUp()}></div>
+        ></div>
     )
 }

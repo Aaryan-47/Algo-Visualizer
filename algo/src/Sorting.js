@@ -189,9 +189,7 @@ function Sorting() {
     }
   function mergesort()
   {
-    var t0=performance.now();
     const animations=mergeSort(arr);
-    var t1=performance.now();
     console.log(animations)
     const arraybar=document.getElementsByClassName('arrayBar')
     for(let i=0;i<animations.length;i++)
@@ -218,11 +216,6 @@ function Sorting() {
         ,i*10)
       }
       }
-      let time_taken=t1-t0;
-      const string="Time taken to sort the array="+`${time_taken}`+"Milliseconds"
-      setTimeout(()=>{
-      window.alert(string);
-      },15000);
       
        
     }
@@ -230,12 +223,18 @@ function Sorting() {
 const reset=()=>
 {
   let arr=[]
-  for(let p=0;p<100;p++){
+  for(let p=0;p<70;p++){
   let i=Math.floor(Math.random()*30+2);
   arr.push(i);
   }
 
   setarr(arr);
+}
+function show()
+{
+const links = document.querySelector('.links')
+  links.classList.toggle('show-links')
+
 }
 const shuffle=()=>
 {
@@ -252,20 +251,41 @@ const shuffle=()=>
  console.log(arr);
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-      <div className="container-fluid">
-    <a class="navbar-brand design" href="#"><img src={logo} className="img"></img>SORTING VISUALIZER</a>
-    <form class="form-inline">
-    <button class="btn btn-danger but" type="button" onClick={reset}>Reset Array</button>
-    <button class="btn btn-danger but" type="button" onClick={shuffle}>Shuffle Array</button>
-    <button class="btn btn-success but1" type="button" onClick={quicksort}>Quick Sort</button>
-    <button class="btn btn-success but1" type="button" onClick={mergesort}>Merge Sort</button>
-    <button class="btn btn-success but1" type="button" onClick={heapsort}>Heap Sort</button>
-    <button class="btn btn-success but1" type="button" onClick={selectionsort}>Selection Sort</button>
-    <button class="btn btn-success but1" type="button" onClick={randomsort}>Random Quick Sort</button>
-    <button class="btn btn-success but1" type="button" onClick={bubblesort}>Bubble Sort</button>
-  </form>
-  </div>
+    <nav>
+      <div class="nav-center">
+        <div class="nav-header">
+          <button class="nav-toggle" onClick={show}>
+            <i class="fas fa-bars"></i>
+          </button>
+          <ul class="links2">
+        <li>
+            <button className="btn btn-primary btn-danger" onClick={shuffle}>Shuffle Array</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-danger" onClick={reset}>New Array</button>
+          </li>
+        </ul>
+        </div>
+    
+        <ul class="links">
+          <li>
+          <button className="btn btn-primary btn-success" onClick={quicksort}>QuickSort</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={mergesort}>MergeSort</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={heapsort}>HeapSort</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={selectionsort}>SelectionSort</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={randomsort}>Random QuickSort</button>
+          </li>
+        </ul>
+       
+      </div>
     </nav>
     <br></br>
    <div className="container container-fluid">

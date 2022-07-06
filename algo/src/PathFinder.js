@@ -5,9 +5,14 @@ import './index.css';
 import Node from './Node/Node';
 import{bfs, shortestPathNodes} from './Algos/bfs';
 import{dfs,shortestPathNodesDFS} from './Algos/dfs';
-import logo from './images/path.png';
+import logo from './images/path2.jpg';
+let w=window.innerHeight;
+let h=window.innerWidth;
+let start=Math.round(w/75)
+let start_col=Math.round(h/100)
+let end_col=Math.round(h/40)
 function PathFinder() {
-
+  console.log(start)
   const[grid,setgrid]=useState([])
   //const[firstTime,setfirstTime]=useState(1);
   const[mouseIsPressed,setmouseIsPressed]=useState(0);
@@ -15,13 +20,13 @@ function PathFinder() {
   },[]);
   const getGrid=()=>{
     const nodes=[];
-    for(let row=0;row<15;row++)
+    for(let row=0;row<w/50;row++)
     {
         const currentRow=[];
-        for(let col=0;col<50;col++)
+        for(let col=0;col<h/30;col++)
         {
-            currentRow.push({col,row,isStart:row===10&&col===15,isEnd:row===10&&col===35
-                           ,distance:Infinity,isVisited:false,isWall:false,previousNode:null
+            currentRow.push({col,row,isStart:row===start&&col===start_col,isEnd:row===start&&col===end_col
+                           ,distance:Infinity,isVisited:false,isWall:false,previousNode:null,weight:1
                           });
         }
         nodes.push(currentRow);
@@ -37,7 +42,7 @@ function PathFinder() {
     {
       let r=Math.floor(Math.random()*15);
       let c=Math.floor(Math.random()*50);
-      if(!(r===10&&c===35)&&!(r===10&&c===15))
+      if(!(r===10&&c===35)&&!(r===10&&c===15)&&r<grid.length&&c<grid[0].length)
       {
         const node=grid[r][c];
         const node_new={...node,isWall:true}
@@ -56,10 +61,6 @@ function PathFinder() {
         document.getElementById(`node-${NodesInOrderOfPath[i].row}-${NodesInOrderOfPath[i].col}`).className='node node-shortest-path';
       },40*i);
     }
-    setTimeout(()=>{
-      const string ="The Path length ="+`${NodesInOrderOfPath.length}`;
-    window.alert(`${string}`)
-    },NodesInOrderOfPath.length*71);
   }
   function AnimateVisited(visitedOrder,NodesInOrderOfPath)
   {
@@ -83,41 +84,15 @@ function PathFinder() {
   
   function BFSvisual()
   {
-    const visitedOrder=bfs(grid,grid[10][15],grid[10][35]);
-    const NodesInOrderOfPath=shortestPathNodes(grid[10][35]);
+    const visitedOrder=bfs(grid,grid[start][start_col],grid[start][end_col]);
+    const NodesInOrderOfPath=shortestPathNodes(grid[start][end_col]);
     AnimateVisited(visitedOrder,NodesInOrderOfPath);
   }
   function DFSvisual()
   {
-    const visitedOrder=dfs(grid,grid[10][15],grid[10][35]);
-    const NodesInOrderOfPath=shortestPathNodesDFS(grid[10][35]);
+    const visitedOrder=dfs(grid,grid[start][start_col],grid[start][end_col]);
+    const NodesInOrderOfPath=shortestPathNodesDFS(grid[start][end_col]);
     AnimateVisited(visitedOrder,NodesInOrderOfPath);
-  }
-  function getWalledGrid(row,col)
-  {
-      const newGrid=(grid).slice();
-      const node_initial=newGrid[row][col];
-      const node_walled={...node_initial,isWall:true}
-      newGrid[row][col]=node_walled;
-      return newGrid;
-  }
-  function handleMouseDown(row,col)
-  {
-      const grid_new=getWalledGrid(row,col);
-      setgrid(grid_new);
-      setmouseIsPressed(1);
-  }
-  function handleMouseEnter(row,col)
-  {if(mouseIsPressed){
-    const grid_new=getWalledGrid(row,col);
-    setgrid(grid_new);   
-  }
-  }
-  function handleMouseUp()
-  {
-      console.log("s");
-      setmouseIsPressed(0);
-    console.log(grid);
   }
   
   function clearWall()
@@ -154,32 +129,51 @@ function PathFinder() {
       }
     }
   }
+  function show()
+{
+const links = document.querySelector('.links')
+  links.classList.toggle('show-links')
+
+}
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-      <div className="container-fluid">
-    <a class="navbar-brand design" href="#"><img src={logo} className="img1"style={{height:`30px`,width:'30px'}} ></img>PATHFINDING VISUALIZER</a>
-    <form class="form-inline">
-    <button class="btn btn-danger but" type="button" onClick={generate}>Generate Maze</button>
-    <button class="btn btn-danger but" type="button" onClick={clearGrid}>Clear Path</button>
-    <button class="btn btn-danger but" type="button" onClick={clearWall}>Remove Walls</button>
-    <button class="btn btn-success but1" type="button" onClick={BFSvisual}>Breadth First Search</button>
-    <button class="btn btn-success but1" type="button" onClick={DFSvisual}>Depth First Search</button>
-    </form>
-  </div>
+   <nav>
+      <div class="nav-center">
+        <div class="nav-header">
+          <button class="nav-toggle" onClick={show}>
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+        <ul class="links">
+        <li>
+          <button className="btn btn-primary btn-danger" onClick={generate}>Generate Maze</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-danger" onClick={clearGrid}>Clear Path</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-danger" onClick={clearWall}>Remove Walls</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={BFSvisual}>Breadth First Search</button>
+          </li>
+          <li>
+          <button className="btn btn-primary btn-success" onClick={DFSvisual}>Depth First Search</button>
+          </li>
+        </ul>
+       
+      </div>
     </nav>
     <div className="grid">
+      
         {(grid).map((row,rowIdx) =>{
             return <div key={rowIdx}>
                 {
+
                    row.map((node,nodeIdx)=><Node key={nodeIdx} isStart={node.isStart} isEnd={node.isEnd}
                    isWall={node.isWall} isVisited={node.isVisited} distance={node.distance}
-                   col={node.col} row={node.row} mouseIsPressed={mouseIsPressed}
-                   onMouseDown={(row, col) => handleMouseDown(row, col)}
-                   onMouseEnter={(row, col) =>
-                     handleMouseEnter(row, col)
-                   }
-                   onMouseUp={() => handleMouseUp()}></Node>)
+                   col={node.col} row={node.row} wt={node.weight} mouseIsPressed={mouseIsPressed}
+                  ></Node>)
                 }
                 </div>
         })}
