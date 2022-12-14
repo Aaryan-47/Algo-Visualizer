@@ -285,7 +285,7 @@ nav {
   justify-content: space-around;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1000px) {
   .nav-center {
     max-width: 1170px;
     margin: 0 auto;

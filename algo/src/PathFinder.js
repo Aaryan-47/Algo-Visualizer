@@ -6,33 +6,45 @@ import Node from './Node/Node';
 import{bfs, shortestPathNodes} from './Algos/bfs';
 import{dfs,shortestPathNodesDFS} from './Algos/dfs';
 import logo from './images/path2.jpg';
-let w=window.innerHeight;
-let h=window.innerWidth;
-let start=Math.round(w/75)
-let start_col=Math.round(h/100)
-let end_col=Math.round(h/40)
+
 function PathFinder() {
-  console.log(start)
+  useEffect(()=>{
+    getGrid()
+  },[])
+
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
+
+  function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+        getGrid()
+      }
+  
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    return windowDimensions;
+  }
+  let w=useWindowDimensions().width
+  let h=useWindowDimensions().height
+  let start=Math.round(useWindowDimensions().height/60)
+  let start_col=Math.round(useWindowDimensions().height/70)
+  let end_col=Math.round(useWindowDimensions().height/30)
+  console.log(w)
+  console.log(h)
   const[grid,setgrid]=useState([])
   //const[firstTime,setfirstTime]=useState(1);
   const[mouseIsPressed,setmouseIsPressed]=useState(0);
-  useEffect(()=>{getGrid()
-  },[]);
-  const getGrid=()=>{
-    const nodes=[];
-    for(let row=0;row<w/50;row++)
-    {
-        const currentRow=[];
-        for(let col=0;col<h/30;col++)
-        {
-            currentRow.push({col,row,isStart:row===start&&col===start_col,isEnd:row===start&&col===end_col
-                           ,distance:Infinity,isVisited:false,isWall:false,previousNode:null,weight:1
-                          });
-        }
-        nodes.push(currentRow);
-    }
-    setgrid(nodes);
-}
   function generate()
   {
     clearWall();
@@ -40,7 +52,7 @@ function PathFinder() {
     const newGrid=grid.slice();
     for(let i=0;i<200;i++)
     {
-      let r=Math.floor(Math.random()*15);
+      let r=Math.floor(Math.random()*20);
       let c=Math.floor(Math.random()*50);
       if(!(r===10&&c===35)&&!(r===10&&c===15)&&r<grid.length&&c<grid[0].length)
       {
@@ -51,6 +63,24 @@ function PathFinder() {
     }
     setgrid(newGrid);
   }
+
+  const getGrid=()=>{
+    const nodes=[];
+    for(let row=0;row<w/75;row++)
+    {
+        const currentRow=[];
+        for(let col=0;col<(h/18);col++)
+        {
+            currentRow.push({col,row,isStart:row===start&&col===start_col,isEnd:row===start&&col===end_col
+                           ,distance:Infinity,isVisited:false,isWall:false,previousNode:null,weight:1
+                          });
+        }
+        nodes.push(currentRow);
+    }
+    setgrid(nodes);
+   
+}
+  
   function AnimateResult(NodesInOrderOfPath)
   {
     for(let i=0;i<NodesInOrderOfPath.length;i++)
@@ -143,8 +173,8 @@ const links = document.querySelector('.links')
           <button class="nav-toggle" onClick={show}>
             <i class="fas fa-bars"></i>
           </button>
-        </div>
-        <ul class="links">
+        
+        <ul class="links2">
         <li>
           <button className="btn btn-primary btn-danger" onClick={generate}>Generate Maze</button>
           </li>
@@ -154,6 +184,9 @@ const links = document.querySelector('.links')
           <li>
           <button className="btn btn-primary btn-danger" onClick={clearWall}>Remove Walls</button>
           </li>
+          </ul>
+          </div>
+          <ul class="links">
           <li>
           <button className="btn btn-primary btn-success" onClick={BFSvisual}>Breadth First Search</button>
           </li>
@@ -170,7 +203,7 @@ const links = document.querySelector('.links')
             return <div key={rowIdx}>
                 {
 
-                   row.map((node,nodeIdx)=><Node key={nodeIdx} isStart={node.isStart} isEnd={node.isEnd}
+                   row.map((node,nodeIdx)=><Node width={w} height={h} key={nodeIdx} isStart={node.isStart} isEnd={node.isEnd}
                    isWall={node.isWall} isVisited={node.isVisited} distance={node.distance}
                    col={node.col} row={node.row} wt={node.weight} mouseIsPressed={mouseIsPressed}
                   ></Node>)

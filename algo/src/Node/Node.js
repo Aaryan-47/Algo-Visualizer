@@ -4,6 +4,8 @@ import './Node.css';
 export default function Node(props)
 {
     const {
+        width,
+        height,
         col,
         isEnd,
         isStart,
@@ -22,6 +24,7 @@ export default function Node(props)
      checkWhether='node-weight';
     return (
         <div
+        style={{width:`${width/50}px`,height:`${height/30}px`}}
         id={`node-${row}-${col}`}
         className={`node ${checkWhether}`}
         ></div>
